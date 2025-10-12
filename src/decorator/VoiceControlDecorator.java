@@ -1,4 +1,8 @@
-public class VoiceControlDecorator extends DevicceDecorator {
+package decorator;
+
+import device.Device;
+
+public class VoiceControlDecorator extends DeviceDecorator {
     public VoiceControlDecorator(Device d) {
         super(d);
     }

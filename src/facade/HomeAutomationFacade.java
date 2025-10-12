@@ -1,5 +1,9 @@
+package facade;
+
+import device.Device;
+
 public class HomeAutomationFacade {
-    Device light, music, thermostat, camera;
+    private final Device light, music, thermostat, camera;
 
     public HomeAutomationFacade(Device light, Device music, Device thermostat, Device camera) {
         this.light = light;

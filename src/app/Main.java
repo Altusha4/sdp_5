@@ -3,11 +3,23 @@ package app;
 import device.*;
 import decorator.*;
 import facade.*;
+import factory.DeviceFactory;
+
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Light light = (Light) DeviceFactory.createDevice("light");
+        Thermostat thermostat = (Thermostat) DeviceFactory.createDevice("thermostat");
+        SecurityCamera camera = (SecurityCamera) DeviceFactory.createDevice("securityCamera");
+        MusicSystem music = (MusicSystem) DeviceFactory.createDevice("music");
+
         HomeAutomationFacade home = new HomeAutomationFacade();
+        home.setLight((Light) DeviceFactory.createDevice("light"));
+        home.setThermostat((Thermostat) DeviceFactory.createDevice("thermostat"));
+        home.setCamera((SecurityCamera) DeviceFactory.createDevice("camera"));
+        home.setMusic((MusicSystem) DeviceFactory.createDevice("music"));
+
         Scanner sc = new Scanner(System.in);
 
         while (true) {

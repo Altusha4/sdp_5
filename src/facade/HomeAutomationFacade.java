@@ -2,17 +2,39 @@ package facade;
 import device.*;
 
 public class HomeAutomationFacade {
-    Light light;
-    Thermostat thermostat;
-    SecurityCamera camera;
-    MusicSystem music;
+    private Light light;
+    private Thermostat thermostat;
+    private SecurityCamera camera;
+    private MusicSystem music;
 
-    public HomeAutomationFacade() {
-        light = new Light();
-        thermostat = new Thermostat();
-        camera = new SecurityCamera();
-        music = new MusicSystem();
+    public HomeAutomationFacade() {}
+
+    public void setLight(Light light) {
+        this.light = light;
     }
+    public void setThermostat(Thermostat thermostat) {
+        this.thermostat = thermostat;
+    }
+    public void setCamera(SecurityCamera camera) {
+        this.camera = camera;
+    }
+    public void setMusic(MusicSystem music) {
+        this.music = music;
+    }
+
+    public Light getLight() {
+        return light;
+    }
+    public Thermostat getThermostat() {
+        return thermostat;
+    }
+    public SecurityCamera getCamera() {
+        return camera;
+    }
+    public MusicSystem getMusic() {
+        return music;
+    }
+
     public void movieNight() {
         System.out.println("Movie Night mode is activated!");
         light.operate("on");
@@ -39,17 +61,5 @@ public class HomeAutomationFacade {
         music.operate("Stop music");
         thermostat.operate("Eco temperature");
         camera.operate("Security ON");
-    }
-    public Light getLight() {
-        return light;
-    }
-    public Thermostat getThermostat() {
-        return thermostat;
-    }
-    public SecurityCamera getCamera() {
-        return camera;
-    }
-    public MusicSystem getMusic() {
-        return music;
     }
 }

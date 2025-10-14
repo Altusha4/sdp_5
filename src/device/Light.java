@@ -36,7 +36,7 @@ public class Light implements Device {
                                ", Brightness: " + brightness + "%, Color: " + color);
         }
         else {
-            System.out.println("Unknown command");
+            System.out.println("Unknown command for Light");
         }
     }
 }

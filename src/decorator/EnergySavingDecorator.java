@@ -1,5 +1,4 @@
 package decorator;
-
 import device.Device;
 
 public class EnergySavingDecorator extends DeviceDecorator {

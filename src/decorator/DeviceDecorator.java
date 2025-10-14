@@ -1,5 +1,4 @@
 package decorator;
-
 import device.Device;
 
 abstract class DeviceDecorator implements Device {

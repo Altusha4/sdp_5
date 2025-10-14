@@ -1,5 +1,4 @@
 package facade;
-
 import device.Device;
 
 public class HomeAutomationFacade {

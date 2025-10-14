@@ -1,65 +1,33 @@
 package facade;
-import device.*;
+
+import device.Device;
 
 public class HomeAutomationFacade {
-    private Light light;
-    private Thermostat thermostat;
-    private SecurityCamera camera;
-    private MusicSystem music;
+    private Device light, thermostat, camera, music;
 
-    public HomeAutomationFacade() {}
-
-    public void setLight(Light light) {
-        this.light = light;
+    public void setLight(Device d){
+        this.light = d;
     }
-    public void setThermostat(Thermostat thermostat) {
-        this.thermostat = thermostat;
+    public void setThermostat(Device d) {
+        this.thermostat = d;
     }
-    public void setCamera(SecurityCamera camera) {
-        this.camera = camera;
+    public void setCamera(Device d) {
+        this.camera = d;
     }
-    public void setMusic(MusicSystem music) {
-        this.music = music;
+    public void setMusic(Device d) {
+        this.music = d;
     }
 
-    public Light getLight() {
-        return light;
-    }
-    public Thermostat getThermostat() {
-        return thermostat;
-    }
-    public SecurityCamera getCamera() {
-        return camera;
-    }
-    public MusicSystem getMusic() {
-        return music;
-    }
+    public Device getLight(){ return light; }
+    public Device getThermostat(){ return thermostat; }
+    public Device getCamera(){ return camera; }
+    public Device getMusic(){ return music; }
 
-    public void movieNight() {
+    public void movieNight(){
         System.out.println("Movie Night mode is activated!");
         light.operate("on");
-        light.operate("set");
         thermostat.operate("set");
         camera.operate("record:on");
         music.operate("play");
-    }
-    public void startPartyMode() {
-        System.out.println("\n--- Party Mode ---");
-        light.operate("Turn ON with dim effect");
-        music.operate("Play music loudly");
-    }
-    public void activateNightMode() {
-        System.out.println("\n--- Night Mode ---");
-        light.operate("Turn OFF");
-        thermostat.operate("Set to ECO mode");
-        camera.operate("Enable Security");
-        music.operate("Stop music");
-    }
-    public void leaveHome () {
-        System.out.println("\n--- Leave Home Mode ---");
-        light.operate("Turn OFF");
-        music.operate("Stop music");
-        thermostat.operate("Eco temperature");
-        camera.operate("Security ON");
     }
 }

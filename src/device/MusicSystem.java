@@ -42,5 +42,8 @@ public class MusicSystem implements Device {
         else if (command.equals("show")) {
             System.out.println("Source: " + source + ", Track: " + track + ", Volume: " + volume + ", State: " +(isPlaying ? "Playing" : "Paused"));
         }
+        else {
+            System.out.println("Unknown command for MusicSystem");
+        }
    }
 }

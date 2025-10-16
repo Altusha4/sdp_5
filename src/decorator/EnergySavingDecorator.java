@@ -1,16 +1,27 @@
 package decorator;
-
 import device.Device;
 
-public class EnergySavingDecorator implements Device {
-    private final Device target;
-    public EnergySavingDecorator(Device target) {
-        if (target == null) throw new IllegalArgumentException("target is null");
-        this.target = target;
+public class EnergySavingDecorator extends DeviceDecorator {
+
+    public EnergySavingDecorator(Device device) {
+        super(device);
     }
-    @Override public String name(){ return target.name() + " (Eco)"; }
-    @Override public void operate(String command){
-        if (command.contains("brightness=100")) command = command.replace("100","70");
-        target.operate(command);
+
+    @Override
+    public String name() {
+        return device.name() + " (Eco)";
+    }
+
+    @Override
+    public void operate(String command) {
+        if (command.toLowerCase().contains("brightness=100")) {
+            command = command.replace("100", "70");
+            System.out.println("[Eco Mode] Brightness limited to 70%");
+        }
+        if (command.toLowerCase().contains("volume=100")) {
+            command = command.replace("100", "70");
+            System.out.println("[Eco Mode] Volume limited to 70%");
+        }
+        device.operate(command);
     }
 }

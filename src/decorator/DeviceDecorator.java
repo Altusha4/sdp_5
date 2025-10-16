@@ -7,6 +7,10 @@ abstract class DeviceDecorator implements Device {
         this.device = device;
     }
     @Override
+    public String name() {
+        return device.name();
+    }
+    @Override
     public void operate(String command) {
         device.operate(command);
     }

@@ -1,25 +1,19 @@
 package decorator;
 import device.Device;
 
-public class VoiceControlDecorator implements Device {
-    private final Device target;
-
-    public VoiceControlDecorator(Device target) {
-        if (target == null) throw new IllegalArgumentException("target is null");
-        this.target = target;
+public class VoiceControlDecorator extends DeviceDecorator {
+    public VoiceControlDecorator(Device device) {
+        super(device);
     }
-
     @Override
     public String name() {
-        return target.name() + " (Voice)";
+        return device.name() + " (Voice)";
     }
-
     @Override
     public void operate(String command) {
         System.out.println("Voice command: " + command);
-        target.operate(map(command));
+        device.operate(map(command));
     }
-
     private String map(String s) {
         s = s.toLowerCase();
         if (s.contains("turn on"))  return "on";

@@ -1,6 +1,6 @@
 package device;
 
 public interface Device {
-    String name();
+    String name(); //"Light", "Thermostat" and ...
     void operate(String command);
 }

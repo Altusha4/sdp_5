@@ -9,7 +9,7 @@ public class Main {
         HomeAutomationFacade home = new HomeAutomationFacade();
         home.setLight(SmartDeviceFactory.create("light"));
         home.setThermostat(SmartDeviceFactory.create("thermostat"));
-        home.setCamera(SmartDeviceFactory.create("camera"));      // НЕ "securitycamera"
+        home.setCamera(SmartDeviceFactory.create("camera"));
         home.setMusic(SmartDeviceFactory.create("music"));
 
         Scanner sc = new Scanner(System.in);

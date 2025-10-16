@@ -15,28 +15,29 @@ public class Light implements Device {
     public void operate(String command) {
         Scanner sc = new Scanner(System.in);
 
-        if (command.equals("on")) {
-            isOn = true;
-            System.out.println("Light is ON");
-        }
-        else if (command.equals("off")) {
-            isOn = false;
-            System.out.println("Light is OFF");
-        }
-        else if (command.equals("set")) {
-            System.out.println("Enter brightness (0-100): ");
-            brightness = sc.nextInt();
-            sc.nextLine();
-            System.out.println("Enter color (white, warm, blue, red, green): ");
-            color = sc.nextLine();
-            System.out.println("Light set to " + brightness + "% brightness and color " + color);
-        }
-        else if (command.equals("show")) {
-            System.out.println("Light is " + (isOn ? "ON" : "OFF") +
-                               ", Brightness: " + brightness + "%, Color: " + color);
-        }
-        else {
-            System.out.println("Unknown command for Light");
+        switch (command) {
+            case "on":
+                isOn =  true;
+                System.out.println("Light is ON");
+                break;
+            case "off":
+                isOn =  false;
+                System.out.println("Light is OFF");
+                break;
+            case "show":
+                System.out.println("Light is " + (isOn ? "ON" : "OFF")
+                        + ", Brightness: " + brightness + "%, Color: " + color);
+                break;
+            case "set":
+                System.out.print("Enter brightness (0-100): ");
+                brightness = sc.nextInt();
+                sc.nextLine();
+                System.out.print("Enter color (white, warm, blue, red, green): ");
+                color = sc.nextLine();
+                System.out.println("Light set to " + brightness + "% and color " + color);
+            default:
+                System.out.println("Unknown command for Light");
         }
     }
 }
+

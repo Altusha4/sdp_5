@@ -1,12 +1,27 @@
 package app;
 
+import device.Light;
 import facade.HomeAutomationFacade;
 import factory.SmartDeviceFactory;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        HomeAutomationFacade home = new HomeAutomationFacade();
+        Scanner sc = new Scanner(System.in);
+        Light light = new  Light();
+
+        while(true){
+            System.out.print("\nEnter command (on, off, set, show, exit): ");
+            String cmd = sc.nextLine();
+
+            if (cmd.equals("exit")){
+                System.out.println("Bye!");
+                break;
+            }
+            light.operate(cmd);
+        }
+    }
+        /*HomeAutomationFacade home = new HomeAutomationFacade();
         home.setLight(SmartDeviceFactory.create("light"));
         home.setThermostat(SmartDeviceFactory.create("thermostat"));
         home.setCamera(SmartDeviceFactory.create("camera"));
@@ -34,5 +49,5 @@ public class Main {
                 default -> System.out.println("Invalid choice.");
             }
         }
-    }
+    } */
 }

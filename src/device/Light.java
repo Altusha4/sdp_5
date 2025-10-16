@@ -71,8 +71,18 @@ public class Light implements Device {
                 System.out.println("Light is " + (isOn ? "ON" : "OFF")
                         + ", Brightness: " + brightness + "%, Color: " + color);
                 break;
+            case "help":
+                System.out.println("""
+            Commands for Light:
+              on           - turn on
+              off          - turn off
+              set          - set brightness and color (interactive)
+              show         - show status
+              help         - show this help
+            """);
+            break;
             default:
-                System.out.println("Unknown command for Light");
+                System.out.println("Unknown command for Light. Type 'help'");
         }
     }
 }

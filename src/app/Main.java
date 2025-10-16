@@ -12,37 +12,56 @@ public class Main {
         home.setMusic(SmartDeviceFactory.create("music"));
 
         while (true) {
-            System.out.println("\n--- SMART HOME MENU ---");
-            System.out.println("1. Light");
-            System.out.println("2. Thermostat");
-            System.out.println("3. Security Camera");
-            System.out.println("4. Music System");
-            System.out.println("5. Movie Night");
-            System.out.println("6. Shutdown All");
-            System.out.println("7. Exit");
+            System.out.println("\n--- SMART HOME ---");
+            System.out.println("1) Light  2) Thermostat  3) Camera  4) Music");
+            System.out.println("5) Movie Night  6) Shutdown All  7) Exit");
 
-            int choice = ConsoleIO.askInt("Choose option: ");
-
+            int choice = ConsoleIO.askInt("Choose: ");
             switch (choice) {
                 case 1 -> {
                     if (home.getLight() == null) { System.out.println("Light not connected."); break; }
-                    String cmd = ConsoleIO.ask("Light cmd (on/off/set/show): ");
-                    home.getLight().operate(cmd);
+                    while (true) {
+                        String cmd = ConsoleIO.ask("\n[Light] (on/off/set/show/help/back): ").toLowerCase();
+                        if (cmd.equals("back")) break;
+                        home.getLight().operate(cmd);
+                    }
                 }
                 case 2 -> {
                     if (home.getThermostat() == null) { System.out.println("Thermostat not connected."); break; }
-                    String cmd = ConsoleIO.ask("Thermo cmd (set/show): ");
-                    home.getThermostat().operate(cmd);
+                    while (true) {
+                        String cmd = ConsoleIO.ask("\n[Thermostat] (on/off/set/show/help/back): ").toLowerCase();
+                        if (cmd.equals("back")) break;
+                        home.getThermostat().operate(cmd);
+                    }
                 }
                 case 3 -> {
                     if (home.getCamera() == null) { System.out.println("Camera not connected."); break; }
-                    String cmd = ConsoleIO.ask("Camera cmd (record:on/record:off/detect:on/detect:off/simulate/show/set): ");
-                    home.getCamera().operate(cmd);
+                    while (true) {
+                        System.out.println("\n[Camera cmds] ron | roff | don | doff | sim | show | ? | back");
+                        String cmd = ConsoleIO.ask("Camera> ").toLowerCase();
+                        if (cmd.equals("back")) break;
+                        if (cmd.equals("?")) { home.getCamera().operate("help"); continue; }
+                        switch (cmd) {
+                            case "ron"  -> cmd = "record:on";
+                            case "roff" -> cmd = "record:off";
+                            case "don"  -> cmd = "detect:on";
+                            case "doff" -> cmd = "detect:off";
+                            case "sim"  -> cmd = "simulate";
+                        }
+                        home.getCamera().operate(cmd);
+                    }
                 }
                 case 4 -> {
                     if (home.getMusic() == null) { System.out.println("Music not connected."); break; }
-                    String cmd = ConsoleIO.ask("Music cmd (play/pause/next/source/volume/show): ");
-                    home.getMusic().operate(cmd);
+                    while (true) {
+                        System.out.println("\n[Music cmds] play | pause | next | src | vol | show | ? | back");
+                        String cmd = ConsoleIO.ask("Music> ").toLowerCase();
+                        if (cmd.equals("back")) break;
+                        if (cmd.equals("?")) { home.getMusic().operate("help"); continue; }
+                        if (cmd.equals("src")) cmd = "source";
+                        if (cmd.equals("vol")) cmd = "volume";
+                        home.getMusic().operate(cmd);
+                    }
                 }
                 case 5 -> home.movieNight();
                 case 6 -> home.shutdownAll();

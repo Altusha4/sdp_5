@@ -16,73 +16,58 @@ public class MusicSystem implements Device {
     public void operate(String command) {
         Scanner sc = new Scanner(System.in);
 
-        switch (command) {
-            case "play":
+        switch (command.toLowerCase()) {
+            case "play" -> {
                 isPlaying = true;
-                System.out.println("Now Playing: " + track + " via " + source);
-                break;
-            case "pause":
+                System.out.println("Now playing: " + track + " via " + source);
+            }
+            case "pause" -> {
                 isPlaying = false;
                 System.out.println("Music paused");
-                break;
-            case "next":
-                System.out.print("Enter next track name (or 'back'): ");
-                String next = sc.nextLine().trim();
-                if (next.equalsIgnoreCase("back")) {
-                    System.out.println("Cancelled");
-                    break;
-                }
-                track = next;
-                System.out.println("Now Playing: " + track);
-                break;
-
-            case "source":
-                System.out.print("Enter source name (usb / blueetooth / fm) or 'back': ");
-                String s = sc.nextLine().trim().toLowerCase();
-                if (s.equalsIgnoreCase("back")) {
-                    System.out.println("Cancelled");
-                    break;
-                }
-                if (s.equals("usb") || s.equals("blueetooth") || s.equals("fm")) {
-                    source = s;
-                    System.out.println("Source set to: " + source);
+            }
+            case "next" -> {
+                System.out.print("Enter next track name: ");
+                track = sc.nextLine();
+                System.out.println("Now playing: " + track);
+            }
+            case "src", "source" -> {
+                System.out.print("Enter source (usb / bluetooth / fm): ");
+                source = sc.nextLine().toLowerCase();
+                if (!source.equals("usb") && !source.equals("bluetooth") && !source.equals("fm")) {
+                    System.out.println("Unknown source. Keeping previous: " + this.source);
                 } else {
-                    System.out.println("Invalid source");
+                    System.out.println("Source set to: " + source);
                 }
-                break;
-
-            case "volume":
-                while (true) {
-                    System.out.print("Enter volume (0-100) or 'back': ");
-                    String input = sc.nextLine().trim();
-                    if (input.equalsIgnoreCase("back")) {
-                        System.out.println("Cancelled");
-                        break;
-                    }
-                    try {
-                        int v = Integer.parseInt(input);
-                        if (v < 0 || v > 100) {
-                            System.out.println("Volume must be between 0 and 100");
-                            continue;
-                        }
+            }
+            case "vol", "volume" -> {
+                System.out.print("Enter volume (0–100): ");
+                try {
+                    int v = Integer.parseInt(sc.nextLine());
+                    if (v < 0 || v > 100) {
+                        System.out.println("Volume out of range. Keeping previous: " + volume);
+                    } else {
                         volume = v;
                         System.out.println("Volume set to: " + volume);
-                        break;
-                    } catch (NumberFormatException e) {
-                        System.out.println("Enter a number 0-100");
                     }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number. Try again.");
                 }
-                break;
-
-            case "show":
-                System.out.println("Source: " + source
-                        + ", Track: " + track
-                        + ", Volume: " + volume
-                        + ", State: " + (isPlaying ? "Playing" : "Paused"));
-                break;
-
-            default:
-                System.out.println("Unknown command for MusicSystem");
+            }
+            case "show" -> System.out.println("Source: " + source +
+                    " | Track: " + track +
+                    " | Volume: " + volume +
+                    " | State: " + (isPlaying ? "Playing" : "Paused"));
+            case "help", "?" -> System.out.println("""
+                Commands for Music System:
+                  play   - start playing current track
+                  pause  - pause music
+                  next   - enter next track
+                  src    - set source (usb/bluetooth/fm)
+                  vol    - set volume 0–100
+                  show   - show status
+                  help/? - show this help
+                """);
+            default -> System.out.println("Unknown command. Type 'help' or '?' for available options.");
         }
     }
 }

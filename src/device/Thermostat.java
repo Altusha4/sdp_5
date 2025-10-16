@@ -62,8 +62,18 @@ public class Thermostat implements Device {
                 System.out.printf("Mode: %s | Target: %.1f°C | Current: %.1f°C | Power: %s%n",
                         mode, targetTemp, currentTemp, enabled ? "ON" : "OFF");
                 break;
+            case "help":
+                System.out.println("""
+            Commands for Thermostat:
+              on           - power on
+              off          - power off
+              set          - interactive mode and temperatures
+              show         - show status
+              help         - show this help
+            """);
+                break;
             default:
-                System.out.println("Unknown command for Thermostat.");
+                System.out.println("Unknown command for Thermostat. Type 'help'");
         }
     }
     void checkTemperature() {

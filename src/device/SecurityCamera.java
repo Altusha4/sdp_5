@@ -71,8 +71,21 @@ public class SecurityCamera implements Device {
                 System.out.println("Camera status — Recording: " + (recording ? "ON" : "OFF")
                         + ", Motion detection: " + (motionDetect ? "ON" : "OFF"));
                 break;
+            case "help":
+                System.out.println("""
+            Commands for SecurityCamera:
+              record:on    - enable recording
+              record:off   - disable recording
+              detect:on    - enable motion detection
+              detect:off   - disable motion detection
+              simulate     - simulate motion event
+              set          - interactive toggle detection/recording
+              show         - show status
+              help         - show this help
+            """);
+                break;
             default:
-                System.out.println("Unknown command for SecurityCamera");
+                System.out.println("Unknown command for SecurityCamera. Type 'help'");
         }
     }
 }

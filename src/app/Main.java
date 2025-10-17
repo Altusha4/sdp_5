@@ -28,8 +28,19 @@ public class Main {
                         break;
                     }
                     while (true) {
-                        String cmd = ConsoleIO.ask("\n[Light] (on/off/set/show/help/back): ").toLowerCase(Locale.ROOT);
+                        String cmd = ConsoleIO.ask("\n[Light] (on/off/set/show/help/back): ")
+                                .trim().toLowerCase();
+
+                        if (cmd.startsWith(homeName.toLowerCase())) {
+                            cmd = cmd.substring(homeName.length())
+                                    .replaceFirst("^[,\\s]+", "")
+                                    .trim();
+                            if (cmd.contains("turn on"))  cmd = "on";
+                            if (cmd.contains("turn off")) cmd = "off";
+                            System.out.println("Voice command: " + cmd);
+                        }
                         if (cmd.equals("back")) break;
+
                         home.getLight().operate(cmd);
                     }
                 }
@@ -73,15 +84,26 @@ public class Main {
                         break;
                     }
                     while (true) {
-                        System.out.println("\n[Music cmds] play | pause | next | src | vol | show | ? | back");
-                        String cmd = ConsoleIO.ask("Music> ").toLowerCase(Locale.ROOT);
-                        if (cmd.equals("back")) break;
-                        if (cmd.equals("?")) {
-                            home.getMusic().operate("help");
-                            continue;
+                        String cmd = ConsoleIO.ask("\n[Music] (play/pause/next/src/vol/show/help/back): ")
+                                .trim().toLowerCase();
+
+                        if (cmd.startsWith(homeName.toLowerCase())) {
+                            cmd = cmd.substring(homeName.length())
+                                    .replaceFirst("^[,\\s]+", "")
+                                    .trim();
+
+                            if (cmd.contains("turn on") || cmd.contains("play"))  cmd = "play";
+                            if (cmd.contains("turn off") || cmd.contains("pause")) cmd = "pause";
+
+                            System.out.println("Voice command: " + cmd);
                         }
+
+                        if (cmd.equals("?")) cmd = "help";
                         if (cmd.equals("src")) cmd = "source";
                         if (cmd.equals("vol")) cmd = "volume";
+
+                        if (cmd.equals("back")) break;
+
                         home.getMusic().operate(cmd);
                     }
                 }

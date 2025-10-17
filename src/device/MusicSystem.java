@@ -1,5 +1,5 @@
 package device;
-import java.util.Scanner;
+import app.ConsoleIO;
 
 public class MusicSystem implements Device {
     String source = "bluetooth";
@@ -14,8 +14,6 @@ public class MusicSystem implements Device {
 
     @Override
     public void operate(String command) {
-        Scanner sc = new Scanner(System.in);
-
         switch (command.toLowerCase()) {
             case "play" -> {
                 isPlaying = true;
@@ -26,31 +24,25 @@ public class MusicSystem implements Device {
                 System.out.println("Music paused");
             }
             case "next" -> {
-                System.out.print("Enter next track name: ");
-                track = sc.nextLine();
+                track = ConsoleIO.ask("Enter next track name: ");
                 System.out.println("Now playing: " + track);
             }
             case "src", "source" -> {
-                System.out.print("Enter source (usb / bluetooth / fm): ");
-                source = sc.nextLine().toLowerCase();
-                if (!source.equals("usb") && !source.equals("bluetooth") && !source.equals("fm")) {
-                    System.out.println("Unknown source. Keeping previous: " + this.source);
+                String newSource = ConsoleIO.ask("Enter source (usb / bluetooth / fm): ").toLowerCase();
+                if (!newSource.equals("usb") && !newSource.equals("bluetooth") && !newSource.equals("fm")) {
+                    System.out.println("Unknown source. Keeping previous: " + source);
                 } else {
+                    source = newSource;
                     System.out.println("Source set to: " + source);
                 }
             }
             case "vol", "volume" -> {
-                System.out.print("Enter volume (0–100): ");
-                try {
-                    int v = Integer.parseInt(sc.nextLine());
-                    if (v < 0 || v > 100) {
-                        System.out.println("Volume out of range. Keeping previous: " + volume);
-                    } else {
-                        volume = v;
-                        System.out.println("Volume set to: " + volume);
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid number. Try again.");
+                int v = ConsoleIO.askInt("Enter volume (0–100): ");
+                if (v < 0 || v > 100) {
+                    System.out.println("Volume out of range. Keeping previous: " + volume);
+                } else {
+                    volume = v;
+                    System.out.println("Volume set to: " + volume);
                 }
             }
             case "show" -> System.out.println("Source: " + source +

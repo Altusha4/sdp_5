@@ -11,11 +11,23 @@ public class ConsoleIO {
         while (true) {
             System.out.print(text);
             try {
-                int value = Integer.parseInt(sc.nextLine().trim());
-                return value;
+                return Integer.parseInt(sc.nextLine().trim());
             } catch (NumberFormatException e) {
                 System.out.println("Enter a valid number.");
             }
         }
+    }
+    public static double askDouble(String text) {
+        while (true) {
+            System.out.print(text);
+            try {
+                return Double.parseDouble(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Enter a valid number.");
+            }
+        }
+    }
+    public static void close() {
+        sc.close();
     }
 }

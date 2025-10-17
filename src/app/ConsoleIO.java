@@ -13,7 +13,7 @@ public class ConsoleIO {
             try {
                 return Integer.parseInt(sc.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Enter a valid number.");
+                println("Enter a valid number.");
             }
         }
     }
@@ -23,9 +23,18 @@ public class ConsoleIO {
             try {
                 return Double.parseDouble(sc.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Enter a valid number.");
+                println("Enter a valid number.");
             }
         }
+    }
+    public static void print(String text) {
+        System.out.print(text);
+    }
+    public static void println(String text) {
+        System.out.println(text);
+    }
+    public static void line() {
+        System.out.println("--------------------------------");
     }
     public static void close() {
         sc.close();

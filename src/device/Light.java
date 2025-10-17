@@ -19,7 +19,6 @@ public class Light implements Device {
     @Override
     public void operate(String command) {
         Scanner sc = new Scanner(System.in);
-
         switch (command) {
             case "on":
                 isOn = true;
@@ -76,7 +75,7 @@ public class Light implements Device {
             Commands for Light:
               on           - turn on
               off          - turn off
-              set          - set brightness and color (interactive)
+              set          - set brightness and color 
               show         - show status
               help         - show this help
             """);

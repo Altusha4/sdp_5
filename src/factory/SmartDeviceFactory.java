@@ -14,7 +14,7 @@ public class SmartDeviceFactory {
                         new EnergySavingDecorator(
                                 new Light()));
             case "thermostat":
-                return new Thermostat();
+                return new VoiceControlDecorator(new Thermostat());
             case "camera":
                 return new RemoteAccessDecorator(
                         new SecurityCamera());

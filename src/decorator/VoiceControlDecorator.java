@@ -11,13 +11,14 @@ public class VoiceControlDecorator extends DeviceDecorator {
     }
     @Override
     public void operate(String command) {
-        System.out.println("Voice command: " + command);
         device.operate(map(command));
     }
     private String map(String s) {
-        s = s.toLowerCase();
-        if (s.contains("turn on"))  return "on";
-        if (s.contains("turn off")) return "off";
+        s = s.toLowerCase().trim();
+        s = s.replaceFirst("^[,.:;\\s]+", "").replace(" the ", " ").trim();
+
+        if (s.contains("turn on") || s.equals("on"))  return "on";
+        if (s.contains("turn off") || s.equals("off")) return "off";
         if (s.startsWith("play"))   return "play";
         if (s.startsWith("pause"))  return "pause";
         if (s.startsWith("next"))   return "next";

@@ -40,7 +40,6 @@ public class Main {
                             System.out.println("Voice command: " + cmd);
                         }
                         if (cmd.equals("back")) break;
-
                         home.getLight().operate(cmd);
                     }
                 }
@@ -50,7 +49,8 @@ public class Main {
                         break;
                     }
                     while (true) {
-                        String cmd = ConsoleIO.ask("\n[Thermostat] (on/off/set/show/help/back): ").toLowerCase(Locale.ROOT);
+                        String cmd = ConsoleIO.ask("\n[Thermostat] (on/off/set/show/help/back): ")
+                                .toLowerCase(Locale.ROOT);
                         if (cmd.equals("back")) break;
                         home.getThermostat().operate(cmd);
                     }
@@ -91,10 +91,8 @@ public class Main {
                             cmd = cmd.substring(homeName.length())
                                     .replaceFirst("^[,\\s]+", "")
                                     .trim();
-
                             if (cmd.contains("turn on") || cmd.contains("play"))  cmd = "play";
                             if (cmd.contains("turn off") || cmd.contains("pause")) cmd = "pause";
-
                             System.out.println("Voice command: " + cmd);
                         }
 
@@ -103,14 +101,14 @@ public class Main {
                         if (cmd.equals("vol")) cmd = "volume";
 
                         if (cmd.equals("back")) break;
-
                         home.getMusic().operate(cmd);
                     }
                 }
                 case 5 -> home.movieNight();
                 case 6 -> home.shutdownAll();
                 case 7 -> {
-                    System.out.println("Bye");
+                    System.out.println("Bye!");
+                    ConsoleIO.close();
                     return;
                 }
                 case 8 -> {
@@ -135,7 +133,6 @@ public class Main {
                         boolean toTherm = cmd.contains("thermostat");
 
                         String action = cmd;
-
                         if (action.contains("turn on"))  action = "on";
                         else if (action.contains("turn off")) action = "off";
                         else if (action.startsWith("play"))   action = "play";

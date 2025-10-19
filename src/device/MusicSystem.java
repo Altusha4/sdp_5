@@ -6,33 +6,26 @@ public class MusicSystem implements Device {
     String track = "Shape of You";
     int volume = 40;
     boolean isPlaying = false;
-    boolean eco = false;
 
     @Override
     public String name() {
-        return "MusicSystem" + (eco ? " (Eco)" : "");
+        return "MusicSystem";
     }
-
     @Override
     public void operate(String command) {
         String cmd = command.trim().toLowerCase();
-        if (cmd.equals("eco:on"))  {
-            eco = true;
-            ConsoleIO.println("Eco mode ON");
-            return;
-        }
-        if (cmd.equals("eco:off")) {
-            eco = false;
-            ConsoleIO.println("Eco mode OFF");
-            return;
-        }
-        if (cmd.equals("eco:show")) {
-            ConsoleIO.println("Eco is " + (eco ? "ON" : "OFF"));
-            return;
-        }
         if (cmd.startsWith("volume=")) {
-            setVolumeSafe(parseInt(command.substring(7).trim()));
-            ConsoleIO.println("Volume set to: " + volume);
+            try {
+                int v = Integer.parseInt(command.substring("volume=".length()).trim());
+                if (v < 0 || v > 100) {
+                    ConsoleIO.println("Volume out of range 0–100.");
+                } else {
+                    volume = v;
+                    ConsoleIO.println("Volume set to: " + volume);
+                }
+            } catch (Exception e) {
+                ConsoleIO.println("Invalid number.");
+            }
             return;
         }
         switch (cmd) {
@@ -59,35 +52,32 @@ public class MusicSystem implements Device {
             }
             case "vol", "volume" -> {
                 int v = ConsoleIO.askInt("Enter volume (0–100): ");
-                setVolumeSafe(v);
-                ConsoleIO.println("Volume set to: " + volume);
+                if (v < 0 || v > 100) {
+                    ConsoleIO.println("Volume out of range 0–100.");
+                } else {
+                    volume = v;
+                    ConsoleIO.println("Volume set to: " + volume);
+                }
             }
             case "show" -> ConsoleIO.println(
                     "Source: " + source +
                             " | Track: " + track +
                             " | Volume: " + volume +
-                            " | State: " + (isPlaying ? "Playing" : "Paused") +
-                            " | Eco: " + (eco ? "ON" : "OFF"));
-            case "help", "?" -> ConsoleIO.println("""
+                            " | State: " + (isPlaying ? "Playing" : "Paused"));
+            case "help","?" -> ConsoleIO.println("""
                 Commands for Music System:
                   play          - start playing current track
                   pause         - pause music
                   next          - enter next track
                   src/source    - set source (usb/bluetooth/fm)
-                  vol/volume    - set volume 0–100 (capped 70 in Eco)
-                  volume=NN     - direct set volume (works with Voice)
+                  vol/volume    - set volume 0–100 
+                  volume=NN     - direct set volume 
                   eco:on|off    - toggle Eco mode
                   eco:show      - show Eco state
                   show          - show status
                   help/?        - this help
                 """);
-            default -> ConsoleIO.println("Unknown command. Type 'help' or '?' for options.");
+            default -> ConsoleIO.println("Unknown command. Type 'help' or '?'.");
         }
     }
-    private void setVolumeSafe(int v) {
-        if (v < 0 || v > 100) { ConsoleIO.println("Volume out of range 0–100."); return; }
-        if (eco && v > 70) { ConsoleIO.println("[Eco] Volume limited to 70%"); v = 70; }
-        volume = v;
-    }
-    private int parseInt(String s) { try { return Integer.parseInt(s); } catch (Exception e) { return -1; } }
 }

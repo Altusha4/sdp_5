@@ -16,11 +16,13 @@ public class SmartDeviceFactory {
             case "thermostat":
                 return new VoiceControlDecorator(new Thermostat());
             case "camera":
-                return new RemoteAccessDecorator(
-                        new SecurityCamera());
+                return new VoiceControlDecorator(
+                        new RemoteAccessDecorator(
+                                new SecurityCamera()));
             case "music":
                 return new VoiceControlDecorator(
-                        new MusicSystem());
+                        new EnergySavingDecorator(
+                                new MusicSystem()));
             default:
                 System.out.println("Unknown device type: " + type);
                 return null;

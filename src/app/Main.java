@@ -23,23 +23,43 @@ public class Main {
             int choice = ConsoleIO.askInt("Choose: ");
             switch (choice) {
                 case 1 -> {
-                    if (home.getLight() == null) {
-                        System.out.println("Light not connected.");
-                        break;
-                    }
+                    if (home.getLight() == null) { System.out.println("Light not connected."); break; }
                     while (true) {
                         String cmd = ConsoleIO.ask("\n[Light] (on/off/set/show/help/back): ")
                                 .trim().toLowerCase();
 
                         if (cmd.startsWith(homeName.toLowerCase())) {
                             cmd = cmd.substring(homeName.length())
-                                    .replaceFirst("^[,\\s]+", "")
-                                    .trim();
+                                    .replaceFirst("^[,\\s]+", "").trim();
                             if (cmd.contains("turn on"))  cmd = "on";
                             if (cmd.contains("turn off")) cmd = "off";
                             System.out.println("Voice command: " + cmd);
                         }
-                        if (cmd.equals("back")) break;
+
+                        if (cmd.equals("back"))
+                            break;
+
+                        if (cmd.equals("set")) {
+                            String bStr = ConsoleIO.ask("Enter brightness 0..100 (or 'back'): ").trim().toLowerCase();
+                            if (bStr.equals("back")) { System.out.println("Canceled.");
+                                continue;
+                            }
+                            try {
+                                int b = Integer.parseInt(bStr);
+                                home.getLight().operate("brightness=" + b);
+                            } catch (NumberFormatException e) {
+                                System.out.println("Enter a number 0..100.");
+                                continue;
+                            }
+
+                            String c = ConsoleIO.ask("Enter color (white, warm, blue, red, green) or 'back': ")
+                                    .trim().toLowerCase();
+                            if (c.equals("back")) { System.out.println("Canceled.");
+                                continue;
+                            }
+                            home.getLight().operate("color=" + c);
+                            continue;
+                        }
                         home.getLight().operate(cmd);
                     }
                 }
@@ -56,33 +76,24 @@ public class Main {
                     }
                 }
                 case 3 -> {
-                    if (home.getCamera() == null) {
-                        System.out.println("Camera not connected.");
-                        break;
-                    }
+                    if (home.getCamera() == null) { System.out.println("Camera not connected."); break; }
                     while (true) {
                         System.out.println("\n[Camera cmds] ron | roff | don | doff | sim | show | ? | back");
                         String cmd = ConsoleIO.ask("Camera> ").toLowerCase(Locale.ROOT);
                         if (cmd.equals("back")) break;
-                        if (cmd.equals("?")) {
-                            home.getCamera().operate("help");
-                            continue;
-                        }
+                        if (cmd.equals("?")) { home.getCamera().operate("help"); continue; }
                         switch (cmd) {
-                            case "ron" -> cmd = "record:on";
+                            case "ron"  -> cmd = "record:on";
                             case "roff" -> cmd = "record:off";
-                            case "don" -> cmd = "detect:on";
+                            case "don"  -> cmd = "detect:on";
                             case "doff" -> cmd = "detect:off";
-                            case "sim" -> cmd = "simulate";
+                            case "sim"  -> cmd = "simulate";
                         }
                         home.getCamera().operate(cmd);
                     }
                 }
                 case 4 -> {
-                    if (home.getMusic() == null) {
-                        System.out.println("Music not connected.");
-                        break;
-                    }
+                    if (home.getMusic() == null) { System.out.println("Music not connected."); break; }
                     while (true) {
                         String cmd = ConsoleIO.ask("\n[Music] (play/pause/next/src/vol/show/help/back): ")
                                 .trim().toLowerCase();
@@ -96,11 +107,15 @@ public class Main {
                             System.out.println("Voice command: " + cmd);
                         }
 
+                        if (cmd.equals("back")) break;
                         if (cmd.equals("?")) cmd = "help";
                         if (cmd.equals("src")) cmd = "source";
-                        if (cmd.equals("vol")) cmd = "volume";
 
-                        if (cmd.equals("back")) break;
+                        if (cmd.equals("vol") || cmd.equals("volume")) {
+                            int v = ConsoleIO.askInt("Enter volume (0–100): ");
+                            home.getMusic().operate("volume=" + v);
+                            continue;
+                        }
                         home.getMusic().operate(cmd);
                     }
                 }
@@ -117,7 +132,8 @@ public class Main {
 
                     while (true) {
                         String voice = ConsoleIO.ask("> ").trim().toLowerCase();
-                        if (voice.equals("exit")) break;
+                        if (voice.equals("exit"))
+                            break;
 
                         String name = homeName.toLowerCase();
                         if (!voice.startsWith(name)) {
@@ -133,14 +149,19 @@ public class Main {
                         boolean toTherm = cmd.contains("thermostat");
 
                         String action = cmd;
-                        if (action.contains("turn on"))  action = "on";
+                        if (action.contains("turn on"))       action = "on";
                         else if (action.contains("turn off")) action = "off";
                         else if (action.startsWith("play"))   action = "play";
                         else if (action.startsWith("pause"))  action = "pause";
                         else if (action.startsWith("next"))   action = "next";
                         else if (action.contains("source"))   action = "source";
-                        else if (action.contains("volume"))   action = "volume";
+                        else if (action.matches("volume\\s+\\d+"))
+                            action = "volume=" + action.replaceAll("\\D+", "");
+                        else if (action.matches("brightness\\s+\\d+"))
+                            action = "brightness=" + action.replaceAll("\\D+", "");
                         else if (action.startsWith("set"))    action = "set";
+                        else if (action.contains("eco on"))   action = "eco:on";
+                        else if (action.contains("eco off"))  action = "eco:off";
 
                         System.out.println("Voice command: " + action);
 

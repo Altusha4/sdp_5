@@ -10,62 +10,73 @@ public class SecurityCamera implements Device {
     public String name() {
         return "SecurityCamera";
     }
+
     @Override
     public void operate(String command) {
-        switch (command) {
-            case "record:on" -> {
+        switch (command.trim().toLowerCase()) {
+            case "record:on":
                 recording = true;
                 ConsoleIO.println("Camera recording is ON");
-            }
-            case "record:off" -> {
+                break;
+            case "record:off":
                 recording = false;
                 ConsoleIO.println("Camera recording is OFF");
-            }
-            case "detect:on" -> {
+                break;
+            case "detect:on":
                 motionDetect = true;
                 ConsoleIO.println("Motion detection is ON");
-            }
-            case "detect:off" -> {
+                break;
+            case "detect:off":
                 motionDetect = false;
                 ConsoleIO.println("Motion detection is OFF");
-            }
-            case "simulate" -> {
-                if (motionDetect) {
-                    ConsoleIO.println("Motion detected at " + LocalTime.now() +
-                            (recording ? " → Recording..." : " → Standby"));
-                } else {
-                    ConsoleIO.println("Motion detection is OFF. No action.");
-                }
-            }
-            case "set" -> {
-                String md = ConsoleIO.ask("Turn motion detection on/off (on/off/back): ").toLowerCase();
-                if (md.equals("back")) {
-                    ConsoleIO.println("Canceled.");
-                    return;
-                }
-                if (md.equals("on") || md.equals("off")) {
-                    motionDetect = md.equals("on");
-                    ConsoleIO.println("Motion detection is " + (motionDetect ? "ON" : "OFF"));
-                } else {
-                    ConsoleIO.println("Invalid option.");
-                    return;
-                }
+                break;
+            case "simulate":
+                simulateMotion();
+                break;
+            case "set":
+                configureSettings();
+                break;
+            case "show":
+                showStatus();
+                break;
+            case "help":
+                showHelp();
+                break;
+            default:
+                ConsoleIO.println("Unknown command for SecurityCamera. Type 'help'");
+        }
+    }
+    private void simulateMotion() {
+        if (motionDetect) {
+            ConsoleIO.println("Motion detected at " + LocalTime.now() +
+                    (recording ? " → Recording..." : " → Standby"));
+        } else {
+            ConsoleIO.println("Motion detection is OFF. No action.");
+        }
+    }
+    private void configureSettings() {
+        String md = ConsoleIO.ask("Turn motion detection on/off (on/off/back): ").toLowerCase();
+        if (md.equals("back")) {
+            ConsoleIO.println("Canceled.");
+            return;
+        }
+        motionDetect = md.equals("on");
+        ConsoleIO.println("Motion detection is " + (motionDetect ? "ON" : "OFF"));
 
-                String rec = ConsoleIO.ask("Turn recording on/off (on/off/back): ").toLowerCase();
-                if (rec.equals("back")) {
-                    ConsoleIO.println("Canceled.");
-                    return;
-                }
-                if (rec.equals("on") || rec.equals("off")) {
-                    recording = rec.equals("on");
-                    ConsoleIO.println("Recording is " + (recording ? "ON" : "OFF"));
-                } else {
-                    ConsoleIO.println("Invalid option.");
-                }
-            }
-            case "show" -> ConsoleIO.println("Camera status — Recording: " + (recording ? "ON" : "OFF")
-                    + ", Motion detection: " + (motionDetect ? "ON" : "OFF"));
-            case "help" -> ConsoleIO.println("""
+        String rec = ConsoleIO.ask("Turn recording on/off (on/off/back): ").toLowerCase();
+        if (rec.equals("back")) {
+            ConsoleIO.println("Canceled.");
+            return;
+        }
+        recording = rec.equals("on");
+        ConsoleIO.println("Recording is " + (recording ? "ON" : "OFF"));
+    }
+    private void showStatus() {
+        ConsoleIO.println("Camera status — Recording: " + (recording ? "ON" : "OFF") +
+                ", Motion detection: " + (motionDetect ? "ON" : "OFF"));
+    }
+    private void showHelp() {
+        ConsoleIO.println("""
                 Commands for SecurityCamera:
                   record:on    - enable recording
                   record:off   - disable recording
@@ -76,7 +87,5 @@ public class SecurityCamera implements Device {
                   show         - show status
                   help         - show this help
                 """);
-            default -> ConsoleIO.println("Unknown command for SecurityCamera. Type 'help'");
-        }
     }
 }

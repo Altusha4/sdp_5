@@ -2,7 +2,7 @@ package decorator;
 import device.Device;
 
 abstract class DeviceDecorator implements Device {
-    protected final Device device;
+    protected Device device;
     public DeviceDecorator(Device device) {
         this.device = device;
     }

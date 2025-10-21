@@ -6,6 +6,7 @@ public class Light implements Device {
     String color = "white";
     boolean isOn = false;
     private static final String[] ALLOWED_COLORS = {"white","warm","blue","red","green"};
+
     @Override
     public String name() {
         return "Light";
@@ -17,6 +18,7 @@ public class Light implements Device {
     @Override
     public void operate(String command) {
         String cmd = command.trim().toLowerCase();
+
         if (cmd.startsWith("brightness=")) {
             try {
                 int b = Integer.parseInt(command.substring("brightness=".length()).trim());
@@ -41,21 +43,25 @@ public class Light implements Device {
             }
             return;
         }
+
         switch (cmd) {
-            case "on" -> {
+            case "on":
                 isOn = true;
                 ConsoleIO.println("Light is ON");
-            }
-            case "off" -> {
+                break;
+            case "off":
                 isOn = false;
                 ConsoleIO.println("Light is OFF");
-            }
-            case "set" -> {
+                break;
+            case "set":
                 ConsoleIO.println("Use: brightness=NN and color=white|warm|blue|red|green");
-            }
-            case "show" -> ConsoleIO.println("Light is " + (isOn ? "ON" : "OFF")
+                break;
+            case "show":
+                ConsoleIO.println("Light is " + (isOn ? "ON" : "OFF")
                     + ", Brightness: " + brightness + "%, Color: " + color);
-            case "help" -> ConsoleIO.println("""
+                break;
+            case "help":
+                ConsoleIO.println("""
                 Commands for Light:
                   on           - turn on
                   off          - turn off
@@ -63,7 +69,9 @@ public class Light implements Device {
                   show         - show status
                   eco:on/off   - on/off eco mode
                 """);
-            default -> ConsoleIO.println("Unknown command for Light. Type 'help'");
+                break;
+            default:
+                ConsoleIO.println("Unknown command for Light. Type 'help'");
         }
     }
 }

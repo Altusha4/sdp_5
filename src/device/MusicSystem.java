@@ -28,43 +28,63 @@ public class MusicSystem implements Device {
             }
             return;
         }
+
         switch (cmd) {
-            case "play" -> {
+            case "play":
                 isPlaying = true;
                 ConsoleIO.println("Now playing: " + track + " via " + source);
-            }
-            case "pause" -> {
+                break;
+            case "pause":
                 isPlaying = false;
                 ConsoleIO.println("Music paused");
-            }
-            case "next" -> {
+                break;
+            case "next":
                 track = ConsoleIO.ask("Enter next track name: ");
                 ConsoleIO.println("Now playing: " + track);
-            }
-            case "src", "source" -> {
-                String newSource = ConsoleIO.ask("Enter source (usb / bluetooth / fm): ").toLowerCase();
-                if (!newSource.equals("usb") && !newSource.equals("bluetooth") && !newSource.equals("fm")) {
-                    ConsoleIO.println("Unknown source. Keeping previous: " + source);
-                } else {
-                    source = newSource;
-                    ConsoleIO.println("Source set to: " + source);
-                }
-            }
-            case "vol", "volume" -> {
-                int v = ConsoleIO.askInt("Enter volume (0–100): ");
-                if (v < 0 || v > 100) {
-                    ConsoleIO.println("Volume out of range 0–100.");
-                } else {
-                    volume = v;
-                    ConsoleIO.println("Volume set to: " + volume);
-                }
-            }
-            case "show" -> ConsoleIO.println(
-                    "Source: " + source +
-                            " | Track: " + track +
-                            " | Volume: " + volume +
-                            " | State: " + (isPlaying ? "Playing" : "Paused"));
-            case "help","?" -> ConsoleIO.println("""
+                break;
+            case "src", "source":
+                changeSource();
+                break;
+            case "vol", "volume":
+                setVolume();
+                break;
+            case "show":
+                showStatus();
+                break;
+            case "help","?":
+                showHelp();
+                break;
+            default:
+                ConsoleIO.println("Unknown command. Type 'help' or '?'.");
+        }
+    }
+    private void changeSource() {
+        String newSource = ConsoleIO.ask("Enter source (usb/bluetooth/fm): ");
+        if (newSource.equals("usb") || newSource.equals("bluetooth") || newSource.equals("fm")) {
+            source = newSource;
+            ConsoleIO.println("Source set to: " + source);
+        } else {
+            ConsoleIO.println("Unknown source. Keeping previous: " + source);
+        }
+    }
+    private void setVolume() {
+        int v = ConsoleIO.askInt("Enter volume (0-100): ");
+        if (v < 0 || v > 100) {
+            ConsoleIO.println("Volume out of range 0-100");
+        } else {
+            volume = v;
+            ConsoleIO.println("Volume set to: " + volume);
+        }
+    }
+    private void showStatus() {
+        ConsoleIO.println(
+                "Source: " + source +
+                " | Track: " + track +
+                " | Volume: " + volume +
+                " | State: " + (isPlaying ? "Playing" : "Paused"));
+    }
+    private void showHelp() {
+        ConsoleIO.println("""
                 Commands for Music System:
                   play          - start playing current track
                   pause         - pause music
@@ -77,7 +97,5 @@ public class MusicSystem implements Device {
                   show          - show status
                   help/?        - this help
                 """);
-            default -> ConsoleIO.println("Unknown command. Type 'help' or '?'.");
-        }
     }
 }

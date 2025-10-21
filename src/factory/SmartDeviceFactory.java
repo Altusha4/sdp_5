@@ -2,30 +2,17 @@ package factory;
 import device.*;
 import decorator.*;
 
-public class SmartDeviceFactory {
-    public static Device create(String type) {
-        if (type == null) {
-            System.out.println("Error: device type is null.");
-            return null;
-        }
-        switch (type.toLowerCase()) {
-            case "light":
-                return new VoiceControlDecorator(
-                        new EnergySavingDecorator(
-                                new Light()));
-            case "thermostat":
-                return new VoiceControlDecorator(new Thermostat());
-            case "camera":
-                return new VoiceControlDecorator(
-                        new RemoteAccessDecorator(
-                                new SecurityCamera()));
-            case "music":
-                return new VoiceControlDecorator(
-                        new EnergySavingDecorator(
-                                new MusicSystem()));
-            default:
-                System.out.println("Unknown device type: " + type);
-                return null;
-        }
+public class SmartDeviceFactory implements DeviceAbstractFactory {
+    public Device createLight() {
+        return new VoiceControlDecorator(new EnergySavingDecorator(new Light()));
+    }
+    public Device createThermostat() {
+        return new VoiceControlDecorator(new Thermostat());
+    }
+    public Device createCamera() {
+        return new VoiceControlDecorator(new RemoteAccessDecorator(new SecurityCamera()));
+    }
+    public Device createMusic() {
+        return new VoiceControlDecorator(new EnergySavingDecorator(new MusicSystem()));
     }
 }

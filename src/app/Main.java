@@ -1,16 +1,17 @@
 package app;
 
 import facade.HomeAutomationFacade;
-import factory.SmartDeviceFactory;
+import factory.*;
 import java.util.Locale;
 
 public class Main {
     public static void main(String[] args) {
         HomeAutomationFacade home = new HomeAutomationFacade();
-        home.setLight(SmartDeviceFactory.create("light"));
-        home.setThermostat(SmartDeviceFactory.create("thermostat"));
-        home.setCamera(SmartDeviceFactory.create("camera"));
-        home.setMusic(SmartDeviceFactory.create("music"));
+        DeviceAbstractFactory factory = new SmartDeviceFactory();
+        home.setLight(factory.createLight());
+        home.setThermostat(factory.createThermostat());
+        home.setCamera(factory.createCamera());
+        home.setMusic(factory.createMusic());
 
         String homeName = ConsoleIO.ask("Give your smart home a name: ").trim();
         System.out.println("Nice! Your home is now called: " + homeName);
